@@ -5,6 +5,10 @@ const Student = {
     return await pool.query("SELECT * FROM students ORDER BY id DESC");
   },
 
+  getById: async (id) => {
+    return await pool.query("SELECT * FROM students WHERE id=$1", [id]);
+  },
+
   create: async (data) => {
     const { first_name, last_name, dob, mobile, address } = data;
     return await pool.query(
