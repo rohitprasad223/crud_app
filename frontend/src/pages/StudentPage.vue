@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>*Student Form*</h1>
+    <h1>Student Form</h1>
     <StudentForm
       :onSave="saveStudent"
       :editingStudent="editingStudent"
@@ -8,11 +8,12 @@
       :existingStudents="students"
     />
 
-    <h1>*Student Table*</h1>
+    <h1>Student Table</h1>
     <StudentTable
       :students="students"
       @edit="editStudent"
       @delete="deleteStudent"
+      @search="fetchStudents" 
     />
   </div>
 </template>
@@ -26,12 +27,13 @@ import { getStudents, addStudent, updateStudent, deleteStudentById } from "../se
 const students = ref([]);
 const editingStudent = ref(null);
 
-const fetchStudents = async () => {
-  const res = await getStudents();
+// Fetch students (optionally with search query)
+const fetchStudents = async (query = "") => {
+  const res = await getStudents(query);  // pass query to API
   students.value = res.data;
 };
 
-onMounted(fetchStudents);
+onMounted(() => fetchStudents());
 
 const saveStudent = async (data, isEdit) => {
   if (isEdit) {
